@@ -1,47 +1,72 @@
 import React, { Component } from 'react'
 import RectDom from 'react-dom'
-// import propTypes   from 'prop-types'
-/**
-* @description:高阶组件 (HOC) 就是封装一个方法传入组件 方法渲染返回组件 然后进行调用组件方法
-* @param {type} Com
-* @return: Mouse
-*/
-function widthMouseCat (Com){
-    class Mouse extends Component{
-        constructor(props) {
-            super(props)
-            this.state={
-                x:0,
-                y:0
-            }
-        }
-        componentDidMount(){
-            window.addEventListener('mousemove',this.moving)
-        }
-        componentWillUnmount(){
-            window.removeEventListener('mousemove',this.moving)
-        }
-        moving=(e)=>{
-            this.setState({
-                x:e.clientX,
-                y:e.clientY
-            })
-        }
-        render(){
-            // return this.props.show(this.state)
-            // 使用children模式
-            return <Com {...this.state}/>
-            
-        }
-    }
-    return Mouse
-}
+import { HashRouter, Link, Route, Switch, Redirect } from 'react-router-dom'
+import './mian.css'
 
-function Cat (props){
-    return <img src={require('./components/index.png')} alt="pic" 
-    style={{width:"50px",height:"50px",position:"fixed",left:props.x-25,top:props.y-25}}/>
-}
+function Login(props){
+    return (
+        <form>
+            <p>
+                <label>用户名</label>:&nbsp;
+                <input type="text"/>
+            </p>
+            <p>
+                <label>密&nbsp;&nbsp;&nbsp;码</label>:&nbsp;
+                <input type="password"/>
+            </p>
+            <p>
+            <input type="button" value="提交" onClick={()=>props.history.push('/main')}/>
+            </p>
 
-const Mouse =widthMouseCat(Cat)
-// RectDom.render(<Mouse  show={(state)=><Cat {...state} />} />,document.getElementById('root'))
-RectDom.render(<Mouse />,document.getElementById('root'))
+        </form>
+    )
+}
+function Page01(){
+    return <h1>
+        内容一
+    </h1>
+}
+function Page02(){
+    return <h1>
+        内容二
+    </h1>
+}
+function Page03(){
+    return <h1>
+        内容三
+    </h1>
+}
+function Main(){
+    return (
+        <div className="wrap">
+            <div className="menus">
+            <Link to="/main">内容一</Link><br/>
+            <Link to="/main/page02">内容二</Link><br/>
+            <Link to="/main/page03">内容三</Link>
+            </div>
+            <div className="content">
+
+                <Route path='/main' exact component={Page01}/>
+                <Route path='/main/page02' component={Page02}/>
+                <Route path='/main/page03' component={Page03}/>
+                <Redirect from='/main' to="/main" exact></Redirect>
+
+            </div>
+
+
+        </div>
+
+
+    )
+
+}
+function App(){
+    return(
+        <HashRouter>
+        <Route path="/" exact component={Login}/>
+        <Route path="/main" component={Main}/>
+
+        </HashRouter>
+    )
+}
+RectDom.render(<App />, document.getElementById('root'))
