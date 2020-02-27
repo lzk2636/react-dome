@@ -1,72 +1,55 @@
 import React, { Component } from 'react'
 import RectDom from 'react-dom'
-import { HashRouter, Link, Route, Switch, Redirect } from 'react-router-dom'
 import './mian.css'
-
-function Login(props){
-    return (
-        <form>
-            <p>
-                <label>用户名</label>:&nbsp;
-                <input type="text"/>
-            </p>
-            <p>
-                <label>密&nbsp;&nbsp;&nbsp;码</label>:&nbsp;
-                <input type="password"/>
-            </p>
-            <p>
-            <input type="button" value="提交" onClick={()=>props.history.push('/main')}/>
-            </p>
-
-        </form>
-    )
-}
-function Page01(){
-    return <h1>
-        内容一
-    </h1>
-}
-function Page02(){
-    return <h1>
-        内容二
-    </h1>
-}
-function Page03(){
-    return <h1>
-        内容三
-    </h1>
-}
-function Main(){
-    return (
-        <div className="wrap">
-            <div className="menus">
-            <Link to="/main">内容一</Link><br/>
-            <Link to="/main/page02">内容二</Link><br/>
-            <Link to="/main/page03">内容三</Link>
+import store from './store'
+class ToList extends Component {
+    constructor(props) {
+        super(props)
+        this.state = store.getState()
+        this.statusSubscribe=store.subscribe(this.fnSetStore)     
+    }
+    fnSetStore=()=>{
+        this.setState(store.getState())
+    }
+    fnAdd=(e)=>{
+        let action={
+            type:"change_val",
+            value:e.target.value
+        }
+        store.dispatch(action)
+    }
+    fnaddList=()=>{
+        store.dispatch({
+            type:"list"
+        })
+    }
+    fnDelete=(i)=>{
+        store.dispatch({
+            type:'id',
+            value:i
+        })
+    }
+        
+    
+    componentWillUnmount(){
+        this.statusSubscribe()
+    }
+    render() {
+        let { aList, sTodo } = this.state
+        return (
+            <div className="list_con">
+                <h2>To do list</h2>
+                <input type="text" name="" id="txt1" className="inputtxt" value={sTodo} onChange={this.fnAdd}/>
+                <input type="button" name="" value="增加" id="btn1" className="inputbtn" onClick={this.fnaddList}/>
+                <ul id="list" className="list">
+                    {
+                        aList.map((item, i) => {return <li key={i}><span>{item}</span><a href="/#" onClick={()=>this.fnDelete(i)} className="del">删除</a></li>} )
+                    }
+                </ul>
             </div>
-            <div className="content">
-
-                <Route path='/main' exact component={Page01}/>
-                <Route path='/main/page02' component={Page02}/>
-                <Route path='/main/page03' component={Page03}/>
-                <Redirect from='/main' to="/main" exact></Redirect>
-
-            </div>
-
-
-        </div>
-
-
-    )
-
+        );
+    }
 }
-function App(){
-    return(
-        <HashRouter>
-        <Route path="/" exact component={Login}/>
-        <Route path="/main" component={Main}/>
 
-        </HashRouter>
-    )
-}
-RectDom.render(<App />, document.getElementById('root'))
+
+RectDom.render(<ToList />, document.getElementById('root'))
