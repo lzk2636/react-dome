@@ -1,106 +1,99 @@
 import React, { Component } from 'react';
-import { Breadcrumb,Table,InputNumber, Button} from 'element-react'
+import { Breadcrumb, Table, InputNumber, Button } from 'element-react'
 import store from '../store';
+import { connect } from 'react-redux'
 
-class Cart extends Component {
-    constructor(props) {
-        super(props);
-        this.state={
-            columns:[
-                {
-                    label:"名称",
-                    prop:'goods_name'
-                },
-                {
-                    label:"图片",
-                    prop:'url',
-                    render:(data)=>{
-                        return <img alt="" src={data.url} style={{"width":"100px",margin:"10px"}} />
-                    }
-                },
-                {
-                    label:"单价",
-                    prop:'price',
-                },
-                {
-                    label:"数量",
-                    prop:'num',
-                    render:(data)=>{
-                        return    <InputNumber size="small" min={1} defaultValue={data.num}  onChange={this.onChange.bind(this,data)}></InputNumber>
-                    }
-                },
-                {
-                    label:"总价",
-                    // prop:'num',
-                    render:(data)=>{
-                        return   <span>{data.num*data.price}</span>
-                    }
-                },
-                {
-                    label:"稍作",
-                    render:(data)=>{
-                        return    <Button type="danger" onClick={()=>this.fndelete(data)}>删除</Button>
-                    }
-                }
-            ],
-            data:store.getState() ,
-            allCount:this.fnCount()
+const Cart = (props) => {
+    let columns = [
+        {
+            label: "名称",
+            prop: 'goods_name'
+        },
+        {
+            label: "图片",
+            prop: 'url',
+            render: (data) => {
+                return <img alt="" src={data.url} style={{ "width": "100px", margin: "10px" }} />
+            }
+        },
+        {
+            label: "单价",
+            prop: 'price',
+        },
+        {
+            label: "数量",
+            prop: 'num',
+            render: (data) => {
+                return <InputNumber size="small" min={1} defaultValue={data.num} onChange={props.onChange.bind(this, data)}></InputNumber>
+            }
+        },
+        {
+            label: "总价",
+            // prop:'num',
+            render: (data) => {
+                return <span>{data.num * data.price}</span>
+            }
+        },
+        {
+            label: "稍作",
+            render: (data) => {
+                return <Button type="danger" onClick={() => props.fndelete(data)}>删除</Button>
+            }
         }
-        this.unSubscrible=store.subscribe(this.fnLinster)
-    }
-    fnCount=()=>{
-        let data=store.getState();
-        // console.log(data)
-        let count=0
-       data.map(item=>{
-           return  count+=item.price*item.num
+    ]
+
+
+    return (
+        <div className="mp10">
+            <Breadcrumb separator="/" >
+                <Breadcrumb.Item>首页</Breadcrumb.Item>
+                <Breadcrumb.Item>购物车</Breadcrumb.Item>
+            </Breadcrumb>
+            <Table
+                className="mp10"
+                style={{ width: '100%' }}
+                columns={columns}
+                data={props.data}
+                highlightCurrentRow={true}
+            />
+            <div className="total_price">
+                <span>总计:</span><b>{props.allCount}</b>
+            </div>
+        </div>
+    );
+
+}
+
+const mapStateToProps = (state) => {
+    let fnCount = () => {
+
+        let count = 0
+        state.map(item => {
+            return count += item.price * item.num
         })
         return count
     }
-    onChange(value,num){
-      
-        value.num=num
-        store.dispatch({
-            type:"set_num",
-            value
-        })
-    }
-    fndelete=(value)=>{
-        store.dispatch({
-            type:"dele_item",
-            value
-        })
-      
-    }
-    fnLinster=()=>{
-        this.setState({
-            data:store.getState(),
-            allCount:this.fnCount()
-        })
-    }
-    componentWillUnmount(){
-        this.unSubscrible()
-    }
-    render() {
-        return (
-            <div className="mp10">
-                <Breadcrumb separator="/" >
-                    <Breadcrumb.Item>首页</Breadcrumb.Item>
-                    <Breadcrumb.Item>购物车</Breadcrumb.Item>
-                </Breadcrumb>
-                <Table
-                    className="mp10"
-                    style={{ width: '100%' }}
-                    columns={this.state.columns}
-                    data={this.state.data}
-                    highlightCurrentRow={true}
-                />
-                <div className="total_price">
-                    <span>总计:</span><b>{this.state.allCount}</b>
-                </div>
-            </div>
-        );
+    return {
+        data: state,
+        allCount: fnCount()
     }
 }
+const mapDispathToProps = (dispatch) => {
+    return {
+        onChange(value, num) {
+            value.num = num
+            dispatch({
+                type: "set_num",
+                value
+            })
+        },
+        fndelete(value) {
+            dispatch({
+                type: "dele_item",
+                value
+            })
 
-export default Cart;
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispathToProps)(Cart);
