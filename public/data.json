@@ -1,0 +1,34 @@
+{
+    "prodction":[
+        {
+            "id":1001,
+            "goods_name":"男式黑白格子衬衫",
+            "url":"./static/images/clothes01.jpg",
+            "price":169,
+            "num":1
+        },
+        {
+            "id":1002,
+            "goods_name":"纯棉印花宽松长袖T恤",
+            "url":"./static/images/clothes02.jpg",
+            "price":69,
+            "num":1
+        },
+        {
+            "id":1003,
+            "goods_name":"男士连帽夹克2019春季新款",
+            "url":"./static/images/clothes03.jpg",
+            "price":249,
+            "num":1
+        },
+        {
+            "id":1004,
+            "goods_name":"2019夏装新品时尚百搭",
+            "url":"./static/images/clothes04.jpg",
+            "price":49,
+            "num":1
+        }
+        
+
+    ]
+}

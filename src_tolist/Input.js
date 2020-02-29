@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios'
+import store from './store';
 
 class Input extends Component {
     constructor(props) {
@@ -22,6 +24,7 @@ class Input extends Component {
             })
         }
     }
+   
     render() {
         let {sTodo} =this.state
         return (

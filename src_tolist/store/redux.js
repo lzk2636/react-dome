@@ -1,6 +1,5 @@
 let oDefaultStore={
-    aList:['学习java','学习php','学习js'],
-    sTodo:''
+   aList:[]
 }
 let redux=(store=oDefaultStore,action)=>{
     if(action.type==='change_val'){
@@ -23,6 +22,8 @@ let redux=(store=oDefaultStore,action)=>{
     }else if(action.type==='id'){
         store.aList.splice(action.value,1)
         return store
+    }else if(action.type==='data_list'){
+        return action.value
     }
     return store
 

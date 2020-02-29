@@ -1,0 +1,64 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei";
+}
+.wrap{
+    width: 900px;
+    margin: 0 auto;
+}
+.wrap .bannner{
+    display: block;
+}
+.wrap .menus{
+    display: flex;
+    align-items: center;
+    margin-top: 13px;
+    width: 900px;
+    height: 59px;
+    background-color: #d8eeec;
+    border-radius: 8px;
+}
+.wrap .menus button{
+    margin-left: 20px;
+}
+.mp10{
+    margin-top: 10px;
+}
+.el-card .el-card__body img.image{
+    width: 100%;
+}
+.goodName{
+    font-size: 13px;
+    font-weight: 700px;
+    margin-bottom: 18px;
+}
+.price{
+    color: #ff78ba;
+}
+.price span{
+    font-size: 13px;
+    font-weight: 700;
+}
+.price b{
+    font-size: 22px;
+}
+.total_price{
+    height: 60px;
+    width: 900px;
+    border:1px solid #dfe6ec;
+    text-align: right;
+    font-size: 16px;
+ 
+    line-height: 60px;;
+    border-top: 0;
+}
+.total_price span{
+    font-size: 12px;
+}
+.total_price b{
+    color: #ff78ba;
+    font-weight: normal;
+    padding: 0 10px 0 5px;
+   
+}
